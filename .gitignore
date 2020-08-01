@@ -1,0 +1,6 @@
+*.exe
+*.pdb
+*.pc
+*.obj
+*.exp
+.build/

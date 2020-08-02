@@ -31,7 +31,7 @@ RAYWHITE :: Color.{  245, 245, 245, 255  };
 
 TraceLogCallback :: #type (logType: s32, text: *u8, args: ..*u8);
 
-ConfigFlag :: enum {
+ConfigFlag :: enum_flags {
     FLAG_RESERVED           :: 1;    // Reserved
     FLAG_FULLSCREEN_MODE    :: 2;    // Set to run program in fullscreen
     FLAG_WINDOW_RESIZABLE   :: 4;    // Set to allow resizable window
@@ -687,7 +687,7 @@ ColorToHSV :: (color: Color) -> Vector3 #foreign raylib_native "ColorToHSV";
 ColorFromHSV :: (hsv: Vector3) -> Color #foreign raylib_native "ColorFromHSV";
 GetColor :: (hexValue: s32) -> Color #foreign raylib_native "GetColor";
 Fade :: (color: Color, alpha: float) -> Color #foreign raylib_native "Fade";
-SetConfigFlags :: (flags: u32)  #foreign raylib_native "SetConfigFlags";
+SetConfigFlags :: (flags: ConfigFlag) #foreign raylib_native "SetConfigFlags";
 SetTraceLogLevel :: (logType: s32)  #foreign raylib_native "SetTraceLogLevel";
 SetTraceLogExit :: (logType: s32)  #foreign raylib_native "SetTraceLogExit";
 SetTraceLogCallback :: (callback: TraceLogCallback)  #foreign raylib_native "SetTraceLogCallback";
@@ -1069,9 +1069,9 @@ SetAudioStreamBufferSizeDefault :: (size: s32)  #foreign raylib_native "SetAudio
 
 make_Rectangle :: (x: $A, y: $B, width: $C, height: $D) -> Rectangle {
     r: Rectangle;
-    r.x = cast(float)x;
-    r.y = cast(float)y;
-    r.width = cast(float)width;
+    r.x      = cast(float)x;
+    r.y      = cast(float)y;
+    r.width  = cast(float)width;
     r.height = cast(float)height;
     return r;
 }

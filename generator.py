@@ -15,6 +15,10 @@ def p(*a, **k):
         k["file"] = ctx["output_file"]
     print(*a, **k)
 
+enum_flags = set((
+    "ConfigFlag",
+))
+
 type_replacements = [
     ("const char", "u8"),
     ("const ", ""),
@@ -74,6 +78,8 @@ function_replacements = dict(
     IsMouseButtonUp = "(button: MouseButton) -> bool",
 
     SetCameraMode = "(camera: Camera, mode: CameraMode)",
+
+    SetConfigFlags = "(flags: ConfigFlag)",
 )
 
 struct_field_replacements = dict(
@@ -109,7 +115,7 @@ def generate_jai_bindings():
         # enums
         #
         for match in re.finditer(r"typedef enum {([^}]*)} (\w+);", header):
-            enum_id = match.group(2)
+            enum_id = match.group(2).strip()
             if enum_id == "bool":
                 continue # skip the C compat bool definition
 
@@ -123,7 +129,10 @@ def generate_jai_bindings():
             if not enum_contents.endswith(";"):
                 enum_contents = enum_contents.rstrip() + ";"
 
-            p(f"{enum_id} :: enum {{\n    {enum_contents}\n}}\n")
+            enum_type = "enum_flags" if enum_id in enum_flags else "enum"
+            print(enum_id, enum_type)
+
+            p(f"{enum_id} :: {enum_type} {{\n    {enum_contents}\n}}\n")
 
         #
         # aliases

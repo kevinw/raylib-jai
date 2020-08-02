@@ -719,11 +719,11 @@ DecompressData :: (compData: *u8, compDataLength: s32, dataLength: *s32) -> *u8 
 SaveStorageValue :: (position: u32, value: s32)  #foreign raylib_native "SaveStorageValue";
 LoadStorageValue :: (position: u32) -> s32 #foreign raylib_native "LoadStorageValue";
 OpenURL :: (url: *u8)  #foreign raylib_native "OpenURL";
-IsKeyPressed :: (key: s32) -> bool #foreign raylib_native "IsKeyPressed";
-IsKeyDown :: (key: s32) -> bool #foreign raylib_native "IsKeyDown";
-IsKeyReleased :: (key: s32) -> bool #foreign raylib_native "IsKeyReleased";
-IsKeyUp :: (key: s32) -> bool #foreign raylib_native "IsKeyUp";
-SetExitKey :: (key: s32)  #foreign raylib_native "SetExitKey";
+IsKeyPressed :: (key: KeyboardKey) -> bool #foreign raylib_native "IsKeyPressed";
+IsKeyDown :: (key: KeyboardKey) -> bool #foreign raylib_native "IsKeyDown";
+IsKeyReleased :: (key: KeyboardKey) -> bool #foreign raylib_native "IsKeyReleased";
+IsKeyUp :: (key: KeyboardKey) -> bool #foreign raylib_native "IsKeyUp";
+SetExitKey :: (key: KeyboardKey) -> bool #foreign raylib_native "SetExitKey";
 GetKeyPressed :: () -> s32 #foreign raylib_native "GetKeyPressed";
 IsGamepadAvailable :: (gamepad: s32) -> bool #foreign raylib_native "IsGamepadAvailable";
 IsGamepadName :: (gamepad: s32, name: *u8) -> bool #foreign raylib_native "IsGamepadName";
@@ -735,10 +735,10 @@ IsGamepadButtonUp :: (gamepad: s32, button: s32) -> bool #foreign raylib_native 
 GetGamepadButtonPressed :: () -> s32 #foreign raylib_native "GetGamepadButtonPressed";
 GetGamepadAxisCount :: (gamepad: s32) -> s32 #foreign raylib_native "GetGamepadAxisCount";
 GetGamepadAxisMovement :: (gamepad: s32, axis: s32) -> float #foreign raylib_native "GetGamepadAxisMovement";
-IsMouseButtonPressed :: (button: s32) -> bool #foreign raylib_native "IsMouseButtonPressed";
-IsMouseButtonDown :: (button: s32) -> bool #foreign raylib_native "IsMouseButtonDown";
-IsMouseButtonReleased :: (button: s32) -> bool #foreign raylib_native "IsMouseButtonReleased";
-IsMouseButtonUp :: (button: s32) -> bool #foreign raylib_native "IsMouseButtonUp";
+IsMouseButtonPressed :: (button: MouseButton) -> bool #foreign raylib_native "IsMouseButtonPressed";
+IsMouseButtonDown :: (button: MouseButton) -> bool #foreign raylib_native "IsMouseButtonDown";
+IsMouseButtonReleased :: (button: MouseButton) -> bool #foreign raylib_native "IsMouseButtonReleased";
+IsMouseButtonUp :: (button: MouseButton) -> bool #foreign raylib_native "IsMouseButtonUp";
 GetMouseX :: () -> s32 #foreign raylib_native "GetMouseX";
 GetMouseY :: () -> s32 #foreign raylib_native "GetMouseY";
 GetMousePosition :: () -> Vector2 #foreign raylib_native "GetMousePosition";
@@ -1065,6 +1065,18 @@ StopAudioStream :: (stream: AudioStream)  #foreign raylib_native "StopAudioStrea
 SetAudioStreamVolume :: (stream: AudioStream, volume: float)  #foreign raylib_native "SetAudioStreamVolume";
 SetAudioStreamPitch :: (stream: AudioStream, pitch: float)  #foreign raylib_native "SetAudioStreamPitch";
 SetAudioStreamBufferSizeDefault :: (size: s32)  #foreign raylib_native "SetAudioStreamBufferSizeDefault";
+
+
+make_Color :: (r: $T, g: T, b: T, a: T) -> Color {
+    color: Color;
+    color.r = cast(u8)r;
+    color.g = cast(u8)g;
+    color.b = cast(u8)b;
+    color.a = cast(u8)a;
+    return color;
+}
+
+
 
 #scope_file // ---------------
 

@@ -32,6 +32,31 @@ def replace_types(s):
         s = re.sub(r"\b" + c_type + r"\b", jai_type, s)
     return s
 
+extra_code = """
+
+make_Color :: (r: $T, g: T, b: T, a: T) -> Color {
+    color: Color;
+    color.r = cast(u8)r;
+    color.g = cast(u8)g;
+    color.b = cast(u8)b;
+    color.a = cast(u8)a;
+    return color;
+}
+
+"""
+function_replacements = dict(
+    IsKeyPressed  = "(key: KeyboardKey) -> bool",
+    IsKeyDown     = "(key: KeyboardKey) -> bool",
+    IsKeyReleased = "(key: KeyboardKey) -> bool",
+    IsKeyUp       = "(key: KeyboardKey) -> bool",
+    SetExitKey    = "(key: KeyboardKey) -> bool",
+
+    IsMouseButtonPressed = "(button: MouseButton) -> bool",
+    IsMouseButtonDown = "(button: MouseButton) -> bool",
+    IsMouseButtonReleased = "(button: MouseButton) -> bool",
+    IsMouseButtonUp = "(button: MouseButton) -> bool",
+)
+
 def generate_jai_bindings():
     header = open("raylib/include/raylib.h").read()
     native_lib_name = "raylib_native"
@@ -149,19 +174,26 @@ def generate_jai_bindings():
             arg_contents = arg_contents.getvalue()
             if arg_contents.endswith(", "):
                 arg_contents = arg_contents[:-2]
-            
-            if return_type == "void":
-                return_type_string = ""
+
+            replacement_string = function_replacements.get(func_name, None)
+            if replacement_string != None:
+                func_decl = replacement_string
             else:
-                return_type = replace_types(return_type)
-                if return_type.endswith(" **"):
-                    return_type = "**" + return_type[:-3]
-                elif return_type.endswith(" *"):
-                    return_type = "*" + return_type[:-2]
+                if return_type == "void":
+                    return_type_string = ""
+                else:
+                    return_type = replace_types(return_type)
+                    if return_type.endswith(" **"):
+                        return_type = "**" + return_type[:-3]
+                    elif return_type.endswith(" *"):
+                        return_type = "*" + return_type[:-2]
 
-                return_type_string = "-> " + return_type
+                    return_type_string = "-> " + return_type
+                func_decl = f"({arg_contents}) {return_type_string}"
 
-            p(f"{func_name} :: ({arg_contents}) {return_type_string} #foreign {native_lib_name} \"{func_name}\";")
+            p(f"{func_name} :: {func_decl} #foreign {native_lib_name} \"{func_name}\";")
+
+        p(extra_code)
         
         #
         # native library

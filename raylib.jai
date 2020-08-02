@@ -491,7 +491,7 @@ Camera3D :: struct {
     target: Vector3;
     up: Vector3;
     fovy: float;
-    type: s32;
+    type: CameraType;
 }
 
 Camera2D :: struct {
@@ -758,7 +758,7 @@ GetGestureDragVector :: () -> Vector2 #foreign raylib_native "GetGestureDragVect
 GetGestureDragAngle :: () -> float #foreign raylib_native "GetGestureDragAngle";
 GetGesturePinchVector :: () -> Vector2 #foreign raylib_native "GetGesturePinchVector";
 GetGesturePinchAngle :: () -> float #foreign raylib_native "GetGesturePinchAngle";
-SetCameraMode :: (camera: Camera, mode: s32)  #foreign raylib_native "SetCameraMode";
+SetCameraMode :: (camera: Camera, mode: CameraMode) #foreign raylib_native "SetCameraMode";
 UpdateCamera :: (camera: *Camera)  #foreign raylib_native "UpdateCamera";
 SetCameraPanControl :: (panKey: s32)  #foreign raylib_native "SetCameraPanControl";
 SetCameraAltControl :: (altKey: s32)  #foreign raylib_native "SetCameraAltControl";
@@ -1067,13 +1067,30 @@ SetAudioStreamPitch :: (stream: AudioStream, pitch: float)  #foreign raylib_nati
 SetAudioStreamBufferSizeDefault :: (size: s32)  #foreign raylib_native "SetAudioStreamBufferSizeDefault";
 
 
-make_Color :: (r: $T, g: T, b: T, a: T) -> Color {
+make_Rectangle :: (x: $A, y: $B, width: $C, height: $D) -> Rectangle {
+    r: Rectangle;
+    r.x = cast(float)x;
+    r.y = cast(float)y;
+    r.width = cast(float)width;
+    r.height = cast(float)height;
+    return r;
+}
+
+make_Color :: (r: $A, g: $B, b: $C, a: $D) -> Color {
     color: Color;
     color.r = cast(u8)r;
     color.g = cast(u8)g;
     color.b = cast(u8)b;
     color.a = cast(u8)a;
     return color;
+}
+
+make_Vector3 :: (x: $A, y: $B, z: $C) -> Vector3 {
+    v: Vector3;
+    v.x = cast(float)x;
+    v.y = cast(float)y;
+    v.z = cast(float)z;
+    return v;
 }
 
 

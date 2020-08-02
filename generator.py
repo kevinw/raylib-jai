@@ -34,13 +34,30 @@ def replace_types(s):
 
 extra_code = """
 
-make_Color :: (r: $T, g: T, b: T, a: T) -> Color {
+make_Rectangle :: (x: $A, y: $B, width: $C, height: $D) -> Rectangle {
+    r: Rectangle;
+    r.x      = cast(float)x;
+    r.y      = cast(float)y;
+    r.width  = cast(float)width;
+    r.height = cast(float)height;
+    return r;
+}
+
+make_Color :: (r: $A, g: $B, b: $C, a: $D) -> Color {
     color: Color;
     color.r = cast(u8)r;
     color.g = cast(u8)g;
     color.b = cast(u8)b;
     color.a = cast(u8)a;
     return color;
+}
+
+make_Vector3 :: (x: $A, y: $B, z: $C) -> Vector3 {
+    v: Vector3;
+    v.x = cast(float)x;
+    v.y = cast(float)y;
+    v.z = cast(float)z;
+    return v;
 }
 
 """
@@ -55,6 +72,14 @@ function_replacements = dict(
     IsMouseButtonDown = "(button: MouseButton) -> bool",
     IsMouseButtonReleased = "(button: MouseButton) -> bool",
     IsMouseButtonUp = "(button: MouseButton) -> bool",
+
+    SetCameraMode = "(camera: Camera, mode: CameraMode)",
+)
+
+struct_field_replacements = dict(
+    Camera3D = dict(
+        type = "CameraType"
+    )
 )
 
 def generate_jai_bindings():
@@ -138,6 +163,8 @@ def generate_jai_bindings():
                 field_id = field_m.group(2).strip()
 
                 pointer_char = "*" * pointer_count
+
+                field_type = struct_field_replacements.get(identifier, {}).get(field_id, field_type)
 
                 p(f"    {field_id}: {pointer_char}{field_type};", file=struct_contents)
             

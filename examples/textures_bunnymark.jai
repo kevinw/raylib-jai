@@ -33,7 +33,7 @@ main :: () {
     InitWindow(screenWidth, screenHeight, "raylib [textures] example - bunnymark");
 
     // Load bunny texture
-    texBunny := LoadTexture("examples/resources/wabbit_alpha.png");
+    texBunny := LoadTexture("resources/wabbit_alpha.png");
 
     bunnies: [..]Bunny;
     array_resize(*bunnies, MAX_BUNNIES);

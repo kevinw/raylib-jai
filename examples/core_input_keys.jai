@@ -7,6 +7,8 @@
 *
 *   Copyright (c) 2014 Ramon Santamaria (@raysan5)
 *
+*   Ported to Jai by @kevinwatters
+*
 ********************************************************************************************/
 
 #load "../raylib.jai";

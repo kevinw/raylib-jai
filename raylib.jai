@@ -1093,6 +1093,13 @@ make_Vector3 :: (x: $A, y: $B, z: $C) -> Vector3 {
     return v;
 }
 
+make_Vector2 :: (x: $A, y: $B) -> Vector2 {
+    v: Vector2;
+    v.x = cast(float)x;
+    v.y = cast(float)y;
+    return v;
+}
+
 
 
 #scope_file // ---------------

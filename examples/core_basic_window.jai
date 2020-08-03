@@ -29,12 +29,13 @@ main :: () {
     screenHeight :: 450;
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    defer CloseWindow();
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    while !WindowShouldClose()     // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
@@ -43,18 +44,14 @@ main :: () {
 
         // Draw
         //----------------------------------------------------------------------------------
-        BeginDrawing();
+        {
+            BeginDrawing();
+            defer EndDrawing();
 
             ClearBackground(RAYWHITE);
 
             DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-
-        EndDrawing();
+        }
         //----------------------------------------------------------------------------------
     }
-
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
 }

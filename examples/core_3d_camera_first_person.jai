@@ -21,6 +21,7 @@ main :: ()
     screenHeight :: 450;
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera first person");
+    defer CloseWindow();
 
     // Define the camera to look into our 3d world (position, target, up vector)
     camera: Camera = .{
@@ -86,9 +87,4 @@ main :: ()
         DrawText("- Mouse move to look around", 40, 60, 10, DARKGRAY);
         //----------------------------------------------------------------------------------
     }
-
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
 }

@@ -18,6 +18,7 @@ main :: () {
     screenHeight :: 450;
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - keyboard input");
+    defer CloseWindow();
 
     ballPosition := Vector2.{ cast(float)screenWidth/2, cast(float)screenHeight/2 };
 
@@ -38,20 +39,16 @@ main :: () {
 
         // Draw
         //----------------------------------------------------------------------------------
-        BeginDrawing();
+        {
+            BeginDrawing();
+            defer EndDrawing();
 
             ClearBackground(RAYWHITE);
 
             DrawText("move the ball with arrow keys", 10, 10, 20, DARKGRAY);
 
             DrawCircleV(ballPosition, 50, MAROON);
-
-        EndDrawing();
+        }
         //----------------------------------------------------------------------------------
     }
-
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
 }

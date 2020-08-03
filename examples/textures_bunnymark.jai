@@ -31,24 +31,27 @@ main :: () {
     screenHeight :: 450;
 
     InitWindow(screenWidth, screenHeight, "raylib [textures] example - bunnymark");
+    defer CloseWindow();
 
     // Load bunny texture
     texBunny := LoadTexture("resources/wabbit_alpha.png");
+    defer UnloadTexture(texBunny);
 
     bunnies: [..]Bunny;
     array_resize(*bunnies, MAX_BUNNIES);
+    defer array_free(bunnies);
 
     bunniesCount := 0;           // Bunnies counter
 
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+    SetTargetFPS(60);            // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    while !WindowShouldClose()   // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
-        if (IsMouseButtonDown(.MOUSE_LEFT_BUTTON))
+        if IsMouseButtonDown(.MOUSE_LEFT_BUTTON)
         {
             // Create more bunnies
             for i: 0..99 {
@@ -65,31 +68,33 @@ main :: () {
         }
 
         // Update bunnies
-        for i: 0..bunniesCount - 1 {
-            bunnies[i].position.x += bunnies[i].speed.x;
-            bunnies[i].position.y += bunnies[i].speed.y;
+        for * bunnies {
+            it.position.x += it.speed.x;
+            it.position.y += it.speed.y;
 
-            if (((bunnies[i].position.x + texBunny.width/2) > cast(float)GetScreenWidth()) ||
-                ((bunnies[i].position.x + texBunny.width/2) < 0)) bunnies[i].speed.x *= -1;
-            if (((bunnies[i].position.y + texBunny.height/2) > cast(float)GetScreenHeight()) ||
-                ((bunnies[i].position.y + texBunny.height/2 - 40) < 0)) bunnies[i].speed.y *= -1;
+            if ((it.position.x + texBunny.width/2) > cast(float)GetScreenWidth()) ||
+                ((it.position.x + texBunny.width/2) < 0) it.speed.x *= -1;
+            if ((it.position.y + texBunny.height/2) > cast(float)GetScreenHeight()) ||
+                ((it.position.y + texBunny.height/2 - 40) < 0) it.speed.y *= -1;
         }
         //----------------------------------------------------------------------------------
 
         // Draw
         //----------------------------------------------------------------------------------
-        BeginDrawing();
+        {
+            BeginDrawing();
+            defer EndDrawing();
 
             ClearBackground(RAYWHITE);
 
-            for i: 0..bunniesCount - 1 {
+            for * bunnies {
                 // NOTE: When internal batch buffer limit is reached (MAX_BATCH_ELEMENTS),
                 // a draw call is launched and buffer starts being filled again;
                 // before issuing a draw call, updated vertex data from internal CPU buffer is send to GPU...
                 // Process of sending data is costly and it could happen that GPU data has not been completely
                 // processed for drawing while new data is tried to be sent (updating current in-use buffers)
                 // it could generates a stall and consequently a frame drop, limiting the number of drawn bunnies
-                DrawTexture(texBunny, cast(s32)bunnies[i].position.x, cast(s32)bunnies[i].position.y, bunnies[i].color);
+                DrawTexture(texBunny, cast(s32)it.position.x, cast(s32)it.position.y, it.color);
             }
 
             DrawRectangle(0, 0, screenWidth, 40, BLACK);
@@ -98,16 +103,6 @@ main :: () {
 
             DrawFPS(10, 10);
 
-        EndDrawing();
-        //----------------------------------------------------------------------------------
+        }
     }
-
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    array_free(bunnies);              // Unload bunnies data array
-
-    UnloadTexture(texBunny);    // Unload bunny texture
-
-    CloseWindow();              // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
 }

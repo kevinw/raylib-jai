@@ -1,4 +1,4 @@
-#import "Math";
+#import "raylib";
 
 Vector2Add :: (v1: Vector2, v2: Vector2) -> Vector2
 {
@@ -17,5 +17,36 @@ Vector2Scale :: (v: Vector2, scale: float) -> Vector2
 
 Vector2Length :: (v: Vector2) -> float
 {
-    return sqrt((v.x*v.x) + (v.y*v.y));
+    return Math.sqrt((v.x*v.x) + (v.y*v.y));
 }
+
+operator + :: (a: Vector2, b: Vector2) -> Vector2 {
+    r: Vector2 = ---;
+
+    r.x = a.x + b.x;
+    r.y = a.y + b.y;
+
+    return r;
+}
+
+operator - :: (a: Vector2, b: Vector2) -> Vector2 {
+    r: Vector2 = ---;
+
+    r.x = a.x - b.x;
+    r.y = a.y - b.y;
+
+    return r;
+}
+
+operator * :: (a: Vector2, k: float) -> Vector2  #symmetric {
+    r: Vector2 = ---;
+    r.x = a.x * k;
+    r.y = a.y * k;
+
+    return r;
+}    
+
+
+#scope_file
+
+Math :: #import "Math";

@@ -90,6 +90,16 @@ function_replacements = dict(
 
     SetTraceLogLevel = "(logType: TraceLogType)",
     SetTraceLogExit  = "(logType: TraceLogType)",
+
+    SetShaderValue  = "(shader: Shader, uniformLoc: s32, value: *void, uniformType: ShaderUniformDataType)",
+    SetShaderValueV = "(shader: Shader, uniformLoc: s32, value: *void, uniformType: ShaderUniformDataType, count: s32)",
+
+    IsGamepadButtonPressed  = "(gamepad: int, button: GamepadButton) -> bool",
+    IsGamepadButtonDown     = "(gamepad: int, button: GamepadButton) -> bool",
+    IsGamepadButtonReleased = "(gamepad: int, button: GamepadButton) -> bool",
+    IsGamepadButtonUp       = "(gamepad: int, button: GamepadButton) -> bool",
+
+    GetGamepadAxisMovement  = "(gamepad: int, axis: GamepadAxis) -> float",
 )
 
 struct_field_replacements = dict(

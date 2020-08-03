@@ -3,5 +3,5 @@ setlocal
 
 
 pushd examples
-for %%i in (*.jai) do jai -x64 %%i
+for %%i in (*.jai) do jai -x64 %%i || exit /b
 popd

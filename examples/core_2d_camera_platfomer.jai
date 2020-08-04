@@ -76,13 +76,13 @@ main :: ()
     
     cameraOption := 0;
     
-    cameraDescriptions := {:string:
+    cameraDescriptions := string.[
         "Follow player center",
         "Follow player center, but clamp to map edges",
         "Follow player center; smoothed",
         "Follow player center horizontally; updateplayer center vertically after landing",
         "Player push camera on getting too close to screen edge"
-    };
+    ];
     
     SetTargetFPS(60);
     //--------------------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 
 [Raylib](https://www.raylib.com/) is a minimal gamedev library for C and this repository has a script for automatically generating Jai bindings from `raylib.h`.
  
-The examples are direct ports of the [raylib examples](https://www.raylib.com/examples.html).
+There are also examples--direct Jai ports of the [raylib examples](https://www.raylib.com/examples.html).
 
 <a href="examples/core_3d_camera_first_person.jai"><img src="doc/screenshots/core_3d_camera_first_person.png" style="max-width: 398px;"></a>
 <a href="examples/shaders_custom_uniform.jai"><img src="doc/screenshots/shaders_custom_uniform.png" style="max-width: 398px;"></a>

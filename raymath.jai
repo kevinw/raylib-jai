@@ -1,4 +1,5 @@
 #placeholder Vector2; // ensure raylib has provided Vector2
+#placeholder make_Vector2;
 
 Vector2Add :: (v1: Vector2, v2: Vector2) -> Vector2
 {

@@ -1,4 +1,4 @@
-# jai-raylib bindings
+# raylib-jai bindings
 
 [Raylib](https://www.raylib.com/) is a minimal gamedev library for C.
  
@@ -23,7 +23,7 @@ main :: () {
         BeginDrawing();
         defer EndDrawing();
         ClearBackground(RAYWHITE);
-        DrawText("hello, jai-raylib", 190, 200, 20, LIGHTGRAY);
+        DrawText("raylib + jai", 190, 200, 20, LIGHTGRAY);
     }
 }
 ```

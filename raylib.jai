@@ -1067,6 +1067,10 @@ SetAudioStreamPitch :: (stream: AudioStream, pitch: float)  #foreign raylib_nati
 SetAudioStreamBufferSizeDefault :: (size: s32)  #foreign raylib_native "SetAudioStreamBufferSizeDefault";
 
 
+DrawText :: inline ($$text: string, posX: s32, posY: s32, fontSize: s32, color: Color) {
+    DrawText(constant_or_temp_cstring(text), posX, posY, fontSize, color);
+}
+
 make_Rectangle :: (x: $A, y: $B, width: $C, height: $D) -> Rectangle {
     r: Rectangle;
     r.x      = cast(float)x;
@@ -1098,6 +1102,26 @@ make_Vector2 :: (x: $A, y: $B) -> Vector2 {
     v.x = cast(float)x;
     v.y = cast(float)y;
     return v;
+}
+
+
+#scope_file
+Basic :: #import "Basic";
+
+_to_temp_c_string :: (s: string) -> *u8 {
+    result : *u8 = Basic.talloc(s.count + 1);
+    memcpy(result, s.data, s.count);
+    result[s.count] = 0;
+    return result;
+}
+
+constant_or_temp_cstring :: inline ($$text: string) -> *u8 {
+    c_str: *u8;
+    #if is_constant(text)
+        c_str = text.data;
+    else
+        c_str = _to_temp_c_string(text);
+    return c_str;
 }
 
 

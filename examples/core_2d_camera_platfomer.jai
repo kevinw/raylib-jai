@@ -66,13 +66,13 @@ main :: ()
 
     CameraFunc :: #type (camera: *Camera2D, player: *Player, items: []EnvItem, delta: float, w: int, h: int);
 
-    cameraUpdaters: []CameraFunc = {:CameraFunc:
+    cameraUpdaters: []CameraFunc = .[
         UpdateCameraCenter,
         UpdateCameraCenterInsideMap,
         UpdateCameraCenterSmoothFollow,
         UpdateCameraEvenOutOnLanding,
         UpdateCameraPlayerBoundsPush
-    };
+    ];
     
     cameraOption := 0;
     

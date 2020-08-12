@@ -38,6 +38,7 @@ Run the example `.exe` files from the `examples/` directory.
 ## Differences from C raylib
 
 * Some functions which take enum arguments (like `SetConfigFlags` for example) have their argument types changed from C's `int` (or Jai's `s32`) to the actual enum type. Consequently, you can call them like `SetConfigFlags(.FLAG_FULLSCREEN_MODE);`
+* An additional set of macros lets you change any of the Begin/End function call pairs (like `BeginMode3D(camera)` and `EndMode3D()`) into an equivalent `PushMode3D(camera)` which will insert an automatic `defer EndXXX()` call into the scope for you.
 
 ## Regenerating the bindings
 

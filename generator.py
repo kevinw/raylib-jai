@@ -84,8 +84,8 @@ PushDrawing :: () #expand {
     `defer EndDrawing();
 }
 
-PushMode2D :: () #expand {
-    BeginMode2D();
+PushMode2D :: (camera: Camera2D) #expand {
+    BeginMode2D(camera);
     `defer EndMode2D();
 }
 

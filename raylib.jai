@@ -1067,6 +1067,7 @@ SetAudioStreamPitch :: (stream: AudioStream, pitch: float)  #foreign raylib_nati
 SetAudioStreamBufferSizeDefault :: (size: s32)  #foreign raylib_native "SetAudioStreamBufferSizeDefault";
 
 
+
 DrawText :: inline ($$text: string, posX: s32, posY: s32, fontSize: s32, color: Color) {
     DrawText(constant_or_temp_cstring(text), posX, posY, fontSize, color);
 }
@@ -1112,8 +1113,8 @@ PushDrawing :: () #expand {
     `defer EndDrawing();
 }
 
-PushMode2D :: () #expand {
-    BeginMode2D();
+PushMode2D :: (camera: Camera2D) #expand {
+    BeginMode2D(camera);
     `defer EndMode2D();
 }
 

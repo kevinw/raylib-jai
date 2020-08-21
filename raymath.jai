@@ -1,5 +1,4 @@
-#placeholder Vector2; // ensure raylib has provided Vector2
-#placeholder make_Vector2;
+#import "raylib";
 
 Vector2Add :: (v1: Vector2, v2: Vector2) -> Vector2
 {
@@ -21,6 +20,10 @@ Vector2Length :: (v: Vector2) -> float
     return Math.sqrt((v.x*v.x) + (v.y*v.y));
 }
 
+Vector2Normalize :: (v: Vector2) -> Vector2 {
+    return Vector2Scale(v, 1/Vector2Length(v));
+}
+
 operator + :: (a: Vector2, b: Vector2) -> Vector2 {
     r: Vector2 = ---;
 
@@ -32,10 +35,22 @@ operator + :: (a: Vector2, b: Vector2) -> Vector2 {
 
 operator - :: (a: Vector2, b: Vector2) -> Vector2 {
     r: Vector2 = ---;
-
     r.x = a.x - b.x;
     r.y = a.y - b.y;
+    return r;
+}
 
+operator + :: (a: Vector2, b: s64) -> Vector2 {
+    r: Vector2 = ---;
+    r.x = a.x + cast(float)b;
+    r.y = a.y + cast(float)b;
+    return r;
+}
+
+operator - :: (a: Vector2, b: s64) -> Vector2 {
+    r: Vector2 = ---;
+    r.x = a.x - cast(float)b;
+    r.y = a.y - cast(float)b;
     return r;
 }
 

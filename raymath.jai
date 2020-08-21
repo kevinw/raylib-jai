@@ -62,6 +62,9 @@ operator * :: (a: Vector2, k: float) -> Vector2  #symmetric {
     return r;
 }    
 
+operator == :: (v1: Vector2, v2: Vector2) -> bool { return v1.x == v2.x && v1.y == v2.y; }
+operator != :: (v1: Vector2, v2: Vector2) -> bool { return v1.x != v2.x || v1.y != v2.y; }
+
 
 #scope_file
 

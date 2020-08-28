@@ -310,7 +310,7 @@ def generate_jai_bindings():
                     return_type_string = "-> " + return_type
                 func_decl = f"({arg_contents}) {return_type_string}"
 
-            p(f"{func_name} :: {func_decl} #foreign {native_lib_name} \"{func_name}\";")
+            p(f"{func_name} :: {func_decl} #foreign {native_lib_name};")
 
         p(extra_code)
         

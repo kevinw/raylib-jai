@@ -408,6 +408,8 @@ Vector3 :: struct {
     x: float;
     y: float;
     z: float;
+
+    #place x; xy: Vector2;
 }
 
 Vector4 :: struct {
@@ -415,6 +417,9 @@ Vector4 :: struct {
     y: float;
     z: float;
     w: float;
+
+    #place x; xy:  Vector2;
+    #place x; xyz: Vector3;
 }
 
 Matrix :: struct {
@@ -436,6 +441,9 @@ Rectangle :: struct {
     y: float;
     width: float;
     height: float;
+
+    #place x;     position: Vector2;
+    #place width; size: Vector2;
 }
 
 Image :: struct {
@@ -1067,6 +1075,7 @@ SetAudioStreamPitch :: (stream: AudioStream, pitch: float)  #foreign raylib_nati
 SetAudioStreamBufferSizeDefault :: (size: s32)  #foreign raylib_native;
 
 
+rlglDraw :: () #foreign raylib_native; // TODO: parse rlgl.h and generate rlgl.jai separately
 
 DrawText :: inline ($$text: string, posX: s32, posY: s32, fontSize: s32, color: Color) {
     DrawText(constant_or_temp_cstring(text), posX, posY, fontSize, color);

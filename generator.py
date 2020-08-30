@@ -36,8 +36,23 @@ def replace_types(s):
         s = re.sub(r"\b" + c_type + r"\b", jai_type, s)
     return s
 
+extra_type_code = dict(
+    Vector3 = """
+    #place x; xy: Vector2;""",
+
+    Vector4 = """
+    #place x; xy:  Vector2;
+    #place x; xyz: Vector3;""",
+
+    Rectangle = """
+    #place x;     position: Vector2;
+    #place width; size: Vector2;""",
+
+)
+
 extra_code = """
 
+rlglDraw :: () #foreign raylib_native; // TODO: parse rlgl.h and generate rlgl.jai separately
 
 DrawText :: inline ($$text: string, posX: s32, posY: s32, fontSize: s32, color: Color) {
     DrawText(constant_or_temp_cstring(text), posX, posY, fontSize, color);
@@ -134,6 +149,9 @@ constant_or_temp_cstring :: inline ($$text: string) -> *u8 {
 }
 
 """
+
+# TODO: these could be a dictionary of argument types mapping to enum types and
+# fuzzy function name matches. or maybe just lists of argument and return types
 function_replacements = dict(
     IsKeyPressed  = "(key: KeyboardKey) -> bool",
     IsKeyDown     = "(key: KeyboardKey) -> bool",
@@ -259,6 +277,10 @@ def generate_jai_bindings():
                 field_type = struct_field_replacements.get(identifier, {}).get(field_id, field_type)
 
                 p(f"    {field_id}: {pointer_char}{field_type};", file=struct_contents)
+            
+            extra = extra_type_code.get(identifier, None)
+            if extra is not None:
+                p(extra, file=struct_contents)
             
             p(f"{identifier} :: struct {{\n{struct_contents.getvalue()}}}\n")
         

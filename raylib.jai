@@ -1075,7 +1075,18 @@ SetAudioStreamPitch :: (stream: AudioStream, pitch: float)  #foreign raylib_nati
 SetAudioStreamBufferSizeDefault :: (size: s32)  #foreign raylib_native;
 
 
-rlglDraw :: () #foreign raylib_native; // TODO: parse rlgl.h and generate rlgl.jai separately
+float16 :: struct { v: [16]float; }
+
+// TODO: parse rlgl.h and generate rlgl.jai separately
+rlglDraw        :: () #foreign raylib_native; 
+rlLoadIdentity  :: () #foreign raylib_native;
+rlMultMatrixf   :: (matf: *float) #foreign raylib_native;
+MatrixToFloatV  :: (mat: Matrix) -> float16 #foreign raylib_native;
+MatrixToFloat   :: (mat: Matrix) -> *float { return MatrixToFloatV(mat).v.data; };
+MatrixTranslate :: (x: float, y: float, z: float) -> Matrix #foreign raylib_native;
+MatrixRotate    :: (axis: Vector3, angle_radians: float) -> Matrix #foreign raylib_native;
+MatrixScale     :: (x: float, y: float, z: float) -> Matrix #foreign raylib_native;
+MatrixMultiply  :: (a: Matrix, b: Matrix) -> Matrix #foreign raylib_native;
 
 DrawText :: inline ($$text: string, posX: s32, posY: s32, fontSize: s32, color: Color) {
     DrawText(constant_or_temp_cstring(text), posX, posY, fontSize, color);

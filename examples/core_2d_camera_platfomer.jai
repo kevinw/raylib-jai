@@ -16,6 +16,7 @@
 #import "raylib";
 #import "raymath";
 #import "Basic";
+#import "Math";
 
 G :: 400;
 PLAYER_JUMP_SPD :: 350;

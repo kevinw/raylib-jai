@@ -18,7 +18,8 @@
 *
 ********************************************************************************************/
 
-#load "../raylib.jai";
+#import "raylib";
+#import "Math";
 
 #if OS == .WINDOWS || OS == .MACOS
     GLSL_VERSION :: 330;

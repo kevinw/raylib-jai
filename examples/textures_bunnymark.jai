@@ -9,8 +9,9 @@
 *
 ********************************************************************************************/
 
-#load "../raylib.jai";
+#import "raylib";
 #import "Basic";
+#import "Math";
 
 MAX_BUNNIES :: 50000;    // 50K bunnies limit
 

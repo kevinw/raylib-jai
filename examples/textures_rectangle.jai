@@ -9,8 +9,9 @@
 *
 ********************************************************************************************/
 
-#load "../raylib.jai";
+#import "raylib";
 #import "Basic";
+#import "Math";
 
 MAX_FRAME_SPEED     :: 15;
 MIN_FRAME_SPEED     :: 1;

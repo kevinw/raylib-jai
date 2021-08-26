@@ -389,8 +389,6 @@ NPatchType :: enum {
 
 rAudioBuffer :: struct { /* only used as a pointer in this header */ }
 
-Quaternion :: Vector4;
-
 Texture :: Texture2D;
 
 TextureCubemap :: Texture2D;
@@ -398,36 +396,6 @@ TextureCubemap :: Texture2D;
 RenderTexture :: RenderTexture2D;
 
 Camera :: Camera3D;
-
-Vector2 :: struct {
-    x: float;
-    y: float;
-}
-
-Vector3 :: struct {
-    x: float;
-    y: float;
-    z: float;
-
-    #place x; xy: Vector2;
-}
-
-Vector4 :: struct {
-    x: float;
-    y: float;
-    z: float;
-    w: float;
-
-    #place x; xy:  Vector2;
-    #place x; xyz: Vector3;
-}
-
-Matrix :: struct {
-    m0, m4, m8, m12: float;
-    m1, m5, m9, m13: float;
-    m2, m6, m10, m14: float;
-    m3, m7, m11, m15: float;
-}
 
 Color :: struct {
     r: u8;
@@ -556,7 +524,7 @@ BoneInfo :: struct {
 }
 
 Model :: struct {
-    transform: Matrix;
+    transform: Matrix4;
     meshCount: s32;
     meshes: *Mesh;
     materialCount: s32;
@@ -678,8 +646,8 @@ EndTextureMode :: ()  #foreign raylib_native;
 BeginScissorMode :: (x: s32, y: s32, width: s32, height: s32)  #foreign raylib_native;
 EndScissorMode :: ()  #foreign raylib_native;
 GetMouseRay :: (mousePosition: Vector2, camera: Camera) -> Ray #foreign raylib_native;
-GetCameraMatrix :: (camera: Camera) -> Matrix #foreign raylib_native;
-GetCameraMatrix2D :: (camera: Camera2D) -> Matrix #foreign raylib_native;
+GetCameraMatrix :: (camera: Camera) -> Matrix4 #foreign raylib_native;
+GetCameraMatrix2D :: (camera: Camera2D) -> Matrix4 #foreign raylib_native;
 GetWorldToScreen :: (position: Vector3, camera: Camera) -> Vector2 #foreign raylib_native;
 GetWorldToScreenEx :: (position: Vector3, camera: Camera, width: s32, height: s32) -> Vector2 #foreign raylib_native;
 GetWorldToScreen2D :: (position: Vector2, camera: Camera2D) -> Vector2 #foreign raylib_native;
@@ -1000,12 +968,12 @@ SetShapesTexture :: (texture: Texture2D, source: Rectangle)  #foreign raylib_nat
 GetShaderLocation :: (shader: Shader, uniformName: *u8) -> s32 #foreign raylib_native;
 SetShaderValue :: (shader: Shader, uniformLoc: s32, value: *void, uniformType: ShaderUniformDataType) #foreign raylib_native;
 SetShaderValueV :: (shader: Shader, uniformLoc: s32, value: *void, uniformType: ShaderUniformDataType, count: s32) #foreign raylib_native;
-SetShaderValueMatrix :: (shader: Shader, uniformLoc: s32, mat: Matrix)  #foreign raylib_native;
+SetShaderValueMatrix :: (shader: Shader, uniformLoc: s32, mat: Matrix4)  #foreign raylib_native;
 SetShaderValueTexture :: (shader: Shader, uniformLoc: s32, texture: Texture2D)  #foreign raylib_native;
-SetMatrixProjection :: (proj: Matrix)  #foreign raylib_native;
-SetMatrixModelview :: (view: Matrix)  #foreign raylib_native;
-GetMatrixModelview :: () -> Matrix #foreign raylib_native;
-GetMatrixProjection :: () -> Matrix #foreign raylib_native;
+SetMatrixProjection :: (proj: Matrix4)  #foreign raylib_native;
+SetMatrixModelview :: (view: Matrix4)  #foreign raylib_native;
+GetMatrixModelview :: () -> Matrix4 #foreign raylib_native;
+GetMatrixProjection :: () -> Matrix4 #foreign raylib_native;
 GenTextureCubemap :: (shader: Shader, map: Texture2D, size: s32) -> Texture2D #foreign raylib_native;
 GenTextureIrradiance :: (shader: Shader, cubemap: Texture2D, size: s32) -> Texture2D #foreign raylib_native;
 GenTexturePrefilter :: (shader: Shader, cubemap: Texture2D, size: s32) -> Texture2D #foreign raylib_native;
@@ -1081,12 +1049,12 @@ float16 :: struct { v: [16]float; }
 rlglDraw        :: () #foreign raylib_native; 
 rlLoadIdentity  :: () #foreign raylib_native;
 rlMultMatrixf   :: (matf: *float) #foreign raylib_native;
-MatrixToFloatV  :: (mat: Matrix) -> float16 #foreign raylib_native;
-MatrixToFloat   :: (mat: Matrix) -> *float { return MatrixToFloatV(mat).v.data; };
-MatrixTranslate :: (x: float, y: float, z: float) -> Matrix #foreign raylib_native;
-MatrixRotate    :: (axis: Vector3, angle_radians: float) -> Matrix #foreign raylib_native;
-MatrixScale     :: (x: float, y: float, z: float) -> Matrix #foreign raylib_native;
-MatrixMultiply  :: (a: Matrix, b: Matrix) -> Matrix #foreign raylib_native;
+MatrixToFloatV  :: (mat: Matrix4) -> float16 #foreign raylib_native;
+MatrixToFloat   :: (mat: Matrix4) -> *float { return MatrixToFloatV(mat).v.data; };
+MatrixTranslate :: (x: float, y: float, z: float) -> Matrix4 #foreign raylib_native;
+MatrixRotate    :: (axis: Vector3, angle_radians: float) -> Matrix4 #foreign raylib_native;
+MatrixScale     :: (x: float, y: float, z: float) -> Matrix4 #foreign raylib_native;
+MatrixMultiply  :: (a: Matrix4, b: Matrix4) -> Matrix4 #foreign raylib_native;
 
 DrawText :: inline ($$text: string, posX: s32, posY: s32, fontSize: s32, color: Color) {
     DrawText(constant_or_temp_cstring(text), posX, posY, fontSize, color);
@@ -1193,3 +1161,5 @@ constant_or_temp_cstring :: inline ($$text: string) -> *u8 {
     #foreign_system_library "winmm";
     raylib_native :: #foreign_library,no_dll "raylib/lib/raylib";
 }
+
+#import "Math";

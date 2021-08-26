@@ -1,4 +1,4 @@
-/*******************************************************************************************
+/*
 *
 *   raylib [shaders] example - Apply a postprocessing shader and connect a custom uniform variable
 *

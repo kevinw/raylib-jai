@@ -19,7 +19,7 @@ Vector2Scale :: (a: rl.Vector2, b: rl.Vector2) -> rl.Vector2 {
 
 Vector2Length :: (v: rl.Vector2) -> float
 {
-    return Math.sqrt((v.x*v.x) + (v.y*v.y));
+    return (v.x*v.x) + (v.y*v.y);
 }
 
 Vector2Normalize :: (v: rl.Vector2) -> rl.Vector2 {
@@ -93,15 +93,11 @@ operator == :: (v1: rl.Vector2, v2: rl.Vector2) -> bool { return v1.x == v2.x &&
 operator != :: (v1: rl.Vector2, v2: rl.Vector2) -> bool { return v1.x != v2.x || v1.y != v2.y; }
 
 normalized :: (using v: rl.Vector3, epsilon := 0, fallback := rl.Vector3.{}) -> rl.Vector3 {
-    sq := Math.sqrt(x*x + y*y + z*z);
+    sq := x*x + y*y + z*z;
     if sq == 0 return fallback;
 
     factor := 1.0 / sq;
-    x *= factor;
-    y *= factor;
-    z *= factor;
-
-    return v;
+    return rl.Vector3(x * factor, y * factor, z * factor);
 }
 
 

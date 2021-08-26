@@ -1,5 +1,4 @@
-/*******************************************************************************************
-*
+/*
 *   raylib [core] example - Keyboard input
 *
 *   This example has been created using raylib 1.0 (www.raylib.com)

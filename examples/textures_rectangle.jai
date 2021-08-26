@@ -1,4 +1,4 @@
-/*******************************************************************************************
+/*
 *
 *   raylib [textures] example - Texture loading and drawing a part defined by a rectangle
 *

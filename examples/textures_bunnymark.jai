@@ -69,14 +69,14 @@ main :: () {
         }
 
         // Update bunnies
-        for * bunnies {
-            it.position.x += it.speed.x;
-            it.position.y += it.speed.y;
+        for i: 0..bunniesCount - 1 {
+            bunnies[i].position.x += bunnies[i].speed.x;
+            bunnies[i].position.y += bunnies[i].speed.y;
 
-            if ((it.position.x + texBunny.width/2) > cast(float)GetScreenWidth()) ||
-                ((it.position.x + texBunny.width/2) < 0) it.speed.x *= -1;
-            if ((it.position.y + texBunny.height/2) > cast(float)GetScreenHeight()) ||
-                ((it.position.y + texBunny.height/2 - 40) < 0) it.speed.y *= -1;
+            if ((bunnies[i].position.x + texBunny.width/2) > cast(float)GetScreenWidth()) ||
+                ((bunnies[i].position.x + texBunny.width/2) < 0) bunnies[i].speed.x *= -1;
+            if ((bunnies[i].position.y + texBunny.height/2) > cast(float)GetScreenHeight()) ||
+                ((bunnies[i].position.y + texBunny.height/2 - 40) < 0) bunnies[i].speed.y *= -1;
         }
         //----------------------------------------------------------------------------------
 

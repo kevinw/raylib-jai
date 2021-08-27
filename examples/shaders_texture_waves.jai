@@ -63,13 +63,13 @@ main :: ()
     screenSize: [2]float;
     screenSize[0] = cast(float)GetScreenWidth();
     screenSize[1] = cast(float)GetScreenHeight();
-    SetShaderValue(shader, GetShaderLocation(shader, "size"), *screenSize, .SHADER_UNIFORM_VEC2);
-    SetShaderValue(shader, freqXLoc, *freqX, .SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, freqYLoc, *freqY, .SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, ampXLoc, *ampX, .SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, ampYLoc, *ampY, .SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, speedXLoc, *speedX, .SHADER_UNIFORM_FLOAT);
-    SetShaderValue(shader, speedYLoc, *speedY, .SHADER_UNIFORM_FLOAT);
+    SetShaderValue(shader, GetShaderLocation(shader, "size"), *screenSize, .UNIFORM_VEC2);
+    SetShaderValue(shader, freqXLoc, *freqX, .UNIFORM_FLOAT);
+    SetShaderValue(shader, freqYLoc, *freqY, .UNIFORM_FLOAT);
+    SetShaderValue(shader, ampXLoc, *ampX, .UNIFORM_FLOAT);
+    SetShaderValue(shader, ampYLoc, *ampY, .UNIFORM_FLOAT);
+    SetShaderValue(shader, speedXLoc, *speedX, .UNIFORM_FLOAT);
+    SetShaderValue(shader, speedYLoc, *speedY, .UNIFORM_FLOAT);
 
     seconds:float = 0.0;
 
@@ -83,7 +83,7 @@ main :: ()
         //----------------------------------------------------------------------------------
         seconds += GetFrameTime();
         
-        SetShaderValue(shader, secondsLoc, *seconds, .SHADER_UNIFORM_FLOAT);
+        SetShaderValue(shader, secondsLoc, *seconds, .UNIFORM_FLOAT);
         //----------------------------------------------------------------------------------
 
         // Draw

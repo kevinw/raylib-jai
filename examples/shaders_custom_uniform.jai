@@ -42,14 +42,14 @@ main :: ()
         target = Vector3.{ 0.0, 1.5, 0.0 },
         up = Vector3.{ 0.0, 1.0, 0.0 },
         fovy = 45.0,
-        projection = .CAMERA_PERSPECTIVE,
+        type = .CAMERA_PERSPECTIVE,
     };
 
     model := LoadModel("resources/models/barracks.obj");                   // Load OBJ model
     defer UnloadModel(model);
     texture := LoadTexture("resources/models/barracks_diffuse.png");   // Load model texture (diffuse map)
     defer UnloadTexture(texture);
-    model.materials[0].maps[MaterialMapIndex.MATERIAL_MAP_ALBEDO].texture = texture;                     // Set model diffuse texture
+    model.materials[0].maps[MaterialMapType.MAP_ALBEDO].texture = texture;                     // Set model diffuse texture
 
     position := Vector3.{ 0.0, 0.0, 0.0 };                                    // Set model position
 
@@ -87,7 +87,7 @@ main :: ()
         swirlCenter[1] = screenHeight - mousePosition.y;
 
         // Send new value to the shader to be used on drawing
-        SetShaderValue(shader, swirlCenterLoc, *swirlCenter[0], .SHADER_UNIFORM_VEC2);
+        SetShaderValue(shader, swirlCenterLoc, *swirlCenter[0], .UNIFORM_VEC2);
 
         UpdateCamera(*camera);              // Update camera
         //----------------------------------------------------------------------------------

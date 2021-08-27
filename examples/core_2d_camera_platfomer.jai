@@ -1,4 +1,4 @@
-/*******************************************************************************************
+/*
 *
 *   raylib [core] example - 2d camera platformer
 *
@@ -13,9 +13,10 @@
 *
 ********************************************************************************************/
 
-#load "../raylib.jai";
-#load "../raymath.jai";
+#import "raylib";
+#import "raymath";
 #import "Basic";
+#import "Math";
 
 G :: 400;
 PLAYER_JUMP_SPD :: 350;
@@ -151,7 +152,6 @@ main :: ()
         }
         //----------------------------------------------------------------------------------
     }
-
 }
 
 UpdatePlayer :: (player: *Player, envItems: []EnvItem, delta: float)

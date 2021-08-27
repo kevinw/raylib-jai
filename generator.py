@@ -16,7 +16,7 @@ def p(*a, **k):
     print(*a, **k)
 
 enum_flags = set((
-    "ConfigFlag",
+    "ConfigFlags",
 ))
 
 type_replacements = [
@@ -29,6 +29,7 @@ type_replacements = [
     ("long", "s32"),
     ("double", "float64"),
     ("int", "s32"),
+    ("Matrix", "Matrix4"),
 ]
 
 def replace_types(s):
@@ -36,34 +37,30 @@ def replace_types(s):
         s = re.sub(r"\b" + c_type + r"\b", jai_type, s)
     return s
 
+def delete_code(s):
+    for block in deletion_code:
+        s = s.replace(block, "")
+    return s
+
 extra_type_code = dict(
-    Vector3 = """
-    #place x; xy: Vector2;""",
-
-    Vector4 = """
-    #place x; xy:  Vector2;
-    #place x; xyz: Vector3;""",
-
     Rectangle = """
     #place x;     position: Vector2;
     #place width; size: Vector2;""",
-
 )
+
+deletion_structs = set(("Vector2", "Vector3", "Vector4", "Matrix", "Quaternion"))
 
 extra_code = """
 
 float16 :: struct { v: [16]float; }
 
 // TODO: parse rlgl.h and generate rlgl.jai separately
-rlglDraw        :: () #foreign raylib_native; 
-rlLoadIdentity  :: () #foreign raylib_native;
-rlMultMatrixf   :: (matf: *float) #foreign raylib_native;
-MatrixToFloatV  :: (mat: Matrix) -> float16 #foreign raylib_native;
-MatrixToFloat   :: (mat: Matrix) -> *float { return MatrixToFloatV(mat).v.data; };
-MatrixTranslate :: (x: float, y: float, z: float) -> Matrix #foreign raylib_native;
-MatrixRotate    :: (axis: Vector3, angle_radians: float) -> Matrix #foreign raylib_native;
-MatrixScale     :: (x: float, y: float, z: float) -> Matrix #foreign raylib_native;
-MatrixMultiply  :: (a: Matrix, b: Matrix) -> Matrix #foreign raylib_native;
+MatrixToFloatV  :: (mat: Matrix4) -> float16 #foreign raylib_native;
+MatrixToFloat   :: (mat: Matrix4) -> *float { return MatrixToFloatV(mat).v.data; };
+MatrixTranslate :: (x: float, y: float, z: float) -> Matrix4 #foreign raylib_native;
+MatrixRotate    :: (axis: Vector3, angle_radians: float) -> Matrix4 #foreign raylib_native;
+MatrixScale     :: (x: float, y: float, z: float) -> Matrix4 #foreign raylib_native;
+MatrixMultiply  :: (a: Matrix4, b: Matrix4) -> Matrix4 #foreign raylib_native;
 
 DrawText :: inline ($$text: string, posX: s32, posY: s32, fontSize: s32, color: Color) {
     DrawText(constant_or_temp_cstring(text), posX, posY, fontSize, color);
@@ -159,6 +156,12 @@ constant_or_temp_cstring :: inline ($$text: string) -> *u8 {
     return c_str;
 }
 
+TraceLogCallback :: #type (logLevel: TraceLogLevel, text: *u8, args: .. Any);
+LoadFileDataCallback :: #type (fileName: *u8, bytesRead: *u32) -> *u8;
+SaveFileDataCallback :: #type (fileName: *u8, data: *void, bytesToWrite: u32) -> bool;
+LoadFileTextCallback :: #type (fileName: *u8) -> *u8;
+SaveFileTextCallback :: #type (fileName: *u8, text: *u8) -> bool;
+
 """
 
 # TODO: these could be a dictionary of argument types mapping to enum types and
@@ -177,10 +180,10 @@ function_replacements = dict(
 
     SetCameraMode = "(camera: Camera, mode: CameraMode)",
 
-    SetConfigFlags = "(flags: ConfigFlag)",
+    SetConfigFlags = "(flags: ConfigFlags)",
 
-    SetTraceLogLevel = "(logType: TraceLogType)",
-    SetTraceLogExit  = "(logType: TraceLogType)",
+    SetTraceLogLevel = "(logType: TraceLogLevel)",
+    SetTraceLogExit  = "(logType: TraceLogLevel)",
 
     SetShaderValue  = "(shader: Shader, uniformLoc: s32, value: *void, uniformType: ShaderUniformDataType)",
     SetShaderValueV = "(shader: Shader, uniformLoc: s32, value: *void, uniformType: ShaderUniformDataType, count: s32)",
@@ -195,7 +198,7 @@ function_replacements = dict(
 
 struct_field_replacements = dict(
     Camera3D = dict(
-        type = "CameraType"
+        projection = "CameraProjection"
     )
 )
 
@@ -251,11 +254,17 @@ def generate_jai_bindings():
         #
         for match in re.finditer(r"typedef struct (\w+) (\w+);", header):
             struct_id = match.group(2)
+            if struct_id in deletion_structs:
+                continue
+            
             p(f"{struct_id} :: struct {{ /* only used as a pointer in this header */ }}\n")
         
         for match in re.finditer(r"typedef (\w+) (\w+);", header):
             if match.group(1) == "struct":
                 continue # handled by loop above
+
+            if match.group(1) in deletion_structs:
+                continue;
             
             aliased_struct = match.group(1)
             struct_id = match.group(2)
@@ -267,6 +276,9 @@ def generate_jai_bindings():
         #
         for match in re.finditer(r"typedef struct (\w+) {([^}]*)}", header):
             identifier = match.group(1)
+            
+            if identifier in deletion_structs:
+                continue
 
             struct_contents = StringIO()
             for line in replace_types(match.group(2).strip()).split("\n"):
@@ -358,6 +370,7 @@ def generate_jai_bindings():
         p("""    #foreign_system_library "winmm";""")
         p(f"    {native_lib_name} :: #foreign_library,no_dll \"{path_to_native_lib}\";")
         p("}")
+        p("""#import "Math";""")
     
     print(f"Wrote Jai bindings file '{output_filename}' from C header '{header_filename}'.")
 

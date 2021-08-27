@@ -1,4 +1,4 @@
-/*******************************************************************************************
+/*
 *
 *   raylib [core] example - 3d camera first person
 *
@@ -9,7 +9,8 @@
 *
 ********************************************************************************************/
 
-#load "../raylib.jai";
+#import "raylib";
+#import "Math";
 
 MAX_COLUMNS :: 20;
 
@@ -29,7 +30,7 @@ main :: ()
         target = .{ 0.0, 1.8, 0.0 },
         up = .{ 0.0, 1.0, 0.0 },
         fovy = 60.0,
-        type = CameraType.CAMERA_PERSPECTIVE,
+        projection = CameraProjection.CAMERA_PERSPECTIVE,
     };
 
     // Generates some random columns

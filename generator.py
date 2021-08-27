@@ -16,7 +16,7 @@ def p(*a, **k):
     print(*a, **k)
 
 enum_flags = set((
-    "ConfigFlag",
+    "ConfigFlags",
 ))
 
 type_replacements = [
@@ -156,7 +156,7 @@ constant_or_temp_cstring :: inline ($$text: string) -> *u8 {
     return c_str;
 }
 
-TraceLogCallback :: #type (logLevel: TraceLogType, text: *u8, args: .. Any);
+TraceLogCallback :: #type (logLevel: TraceLogLevel, text: *u8, args: .. Any);
 LoadFileDataCallback :: #type (fileName: *u8, bytesRead: *u32) -> *u8;
 SaveFileDataCallback :: #type (fileName: *u8, data: *void, bytesToWrite: u32) -> bool;
 LoadFileTextCallback :: #type (fileName: *u8) -> *u8;
@@ -180,10 +180,10 @@ function_replacements = dict(
 
     SetCameraMode = "(camera: Camera, mode: CameraMode)",
 
-    SetConfigFlags = "(flags: ConfigFlag)",
+    SetConfigFlags = "(flags: ConfigFlags)",
 
-    SetTraceLogLevel = "(logType: TraceLogType)",
-    SetTraceLogExit  = "(logType: TraceLogType)",
+    SetTraceLogLevel = "(logType: TraceLogLevel)",
+    SetTraceLogExit  = "(logType: TraceLogLevel)",
 
     SetShaderValue  = "(shader: Shader, uniformLoc: s32, value: *void, uniformType: ShaderUniformDataType)",
     SetShaderValueV = "(shader: Shader, uniformLoc: s32, value: *void, uniformType: ShaderUniformDataType, count: s32)",
@@ -198,7 +198,7 @@ function_replacements = dict(
 
 struct_field_replacements = dict(
     Camera3D = dict(
-        type = "CameraType"
+        projection = "CameraProjection"
     )
 )
 

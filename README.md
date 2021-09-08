@@ -1,4 +1,4 @@
 # raylib-jai bindings
 
-This fork is now being actively maintained: [https://github.com/kujukuju/raylib-jai](kujukuju/raylib-jai)
+This fork is now being actively maintained: [github.com/kujukuju/raylib-jai](https://github.com/kujukuju/raylib-jai)
 
